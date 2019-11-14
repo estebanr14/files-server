@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Certificados Blockchain</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="qrcode/jquery.min.js"></script>
+  <script src="qrcode/qrcode.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(".search-certs").click(function () {
+        $.post("http://192.168.1.13:8085/queryById",
+          {
+            idUser: document.getElementById('id-user').value
+
+          },
+          function (data, status) {
+            console.log(data.resultArray)
+            document.getElementById("resultados").innerHTML = 'Resultados encontrados: ' + data.resultArray.length;
+
+            var li;
+            var miCodigoQR;
+            for (let i = 0; i < data.resultArray.length; i++) {
+              li = document.createElement('div');
+              li.className = 'codigoQR';
+              li.innerHTML =`<div  id="codigoQR-${i}">
+                      <a   href='http://192.168.1.13:3000/file-storage/${data.resultArray[i].name}'  target="_blank"> <h2>${data.resultArray[i].name}</h2> </a>
+                  </div> 
+                 <br> `
+
+                 
+              document.getElementById("lista").appendChild(li);
+
+              miCodigoQR = new QRCode(`codigoQR-${i}`);
+              miCodigoQR.makeCode(JSON.stringify(data.resultArray[i]));
+            }
+          });
+      });
+    });
+  </script>
+</head>
+
+
+
+
+<body>
+
+  <!---------------------------------------------------------------------------------------------------->
+  <!---------------------------------------------------------------------------------------------------->
+  <!---------------------------------------------------------------------------------------------------->
+  <div class="testbox">
+    <div class="form">
+      <div class="banner">
+        <h1 style="color: #007fff;">Buscar Certificados</h1>
+      </div>
+
+      <div class="item">
+        <p>Documento de identidad: </p>
+        <input type="text" id="id-user" name="id-user" />
+      </div>
+      <div class="btn-block">
+        <button class="search-certs" id="consultar">Buscar</button>
+      </div>
+    </div>
+  </div>
+  <div class="testbox">
+      <div class="form">
+        <p id="resultados"></p>
+      
+        <ul id="lista" style="display: inline-block;" ></ul>
+      
+    </div>
+  </div> 
+  
+
+
+  
+</body>
+
+</html>

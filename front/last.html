@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Blockchain Certificates</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./styles/style.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="qrcode/jquery.min.js"></script>
+  <script src="qrcode/qrcode.js"></script> 
+  <script>
+    $(document).ready(function () {
+      $(".search-certs").click(function () {
+        $.post("http://192.168.1.13:8085/queryById",
+          {
+            idUser: document.getElementById('id-user').value
+
+          },
+          function (data, status) {
+            console.log(data.resultArray)
+
+            var li;
+            var miCodigoQR;
+            for (let i = 0; i < data.resultArray.length; i++) {
+              li = document.createElement('li');
+              li.id = data.resultArray[i].name;
+              li.innerHTML =  `<div id="codigoQR-${i}"> <a href='http://192.168.1.13:3000/file-storage/${data.resultArray[i].name}'>${data.resultArray[i].name}</a></div> <br>`
+              
+
+              document.getElementById("lista").appendChild(li);
+
+              miCodigoQR = new QRCode(`codigoQR-${i}`);
+              miCodigoQR.makeCode(JSON.stringify(data.resultArray[i]));
+            }
+          });
+      });
+    });
+  </script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <h1 style="color: #ffffff; ">Certificados Universitarios</h1>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    
+    <div class="col-md-3">
+      <div class="form">
+        <h1>Subir certificado</h1>
+
+        <!-- IMAGE UPLOAD FORM -->
+        <form action="http://192.168.1.13:3000/upload" enctype="multipart/form-data" method="POST">
+
+          <div class="section"> </div>
+          <div class="inner-wrap">
+            <label>Documento de identidad </label><input type="text" placeholder=" Documento de identidad" id="idUser" name="idUser" />
+
+            <label><input type="file" id="pdf" name="pdf" /></label>
+            <div class="button-section ">
+              <input type="submit" class="  " name="Upload" value="Subir certificado" />
+            </div>
+          </div>
+
+      </div>
+      </form>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+
+
+  <div class="container text-center">
+    <div class="col-sm-12">
+      <div class="form">
+        <!---->
+        <h1>Buscar certificados</h1>
+
+        <div class="section"> </div>
+        <div class="inner-wrap">
+          <label><input type="text" placeholder=" Documento de identidad" id="id-user" name="id-user" /></label>
+          <div class="button-section search-certs">
+            <button id="consultar">Buscar</button>
+          </div>
+          <br>
+          <ol id="lista"></ol>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Certificados Blockchain</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+
+
+
+<body>
+  <div class="testbox">
+    <form action="http://192.168.1.13:3000/upload" enctype="multipart/form-data" method="POST">
+      <div class="banner">
+        <h1 style="color: #3ee57b;" >Subir Certificado</h1>
+      </div>
+
+      <div class="item">
+        <p>Documento de identidad: </p>
+        <input type="text" id="idUser" name="idUser" />
+      </div>
+      <label><input type="file" id="pdf" name="pdf" /></label>
+      <div class="btn-block">
+        <button type="submit" href="/">Subir</button>
+      </div>
+
+    </form>
+  </div>
+
+
+  
+</body>
+
+</html>
