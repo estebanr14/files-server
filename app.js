@@ -123,8 +123,14 @@ app.post('/upload', multer(multerConfig).any(), async function (req, res, file) 
 app.post('/hash-by-path', function (req, res) {
 
   let path = req.body.urlFile;
-  let file = fs.readFileSync(path);
-  let hashFile = sha256(file.toString('hex'))
+  let hashFile;
+  try {
+    let file = fs.readFileSync(path);
+    hashFile = sha256(file.toString('hex'))
+  } catch (error) {
+    hashFile = '0'
+  }
+  
 
   let response = {
     hash: hashFile
